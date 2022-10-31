@@ -4,6 +4,10 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ApiService} from "../backend/api.service";
 
+/**
+ * this interface specifies the structure of the expected data that will come from the api
+ * concerning the data and the symbol.
+ */
 export interface SentimentDetail {
   data:[
     {
@@ -15,6 +19,11 @@ export interface SentimentDetail {
     }]
   symbol: string;
 }
+
+/**
+ * this interface specifies the structure of the expected data that will come from the api
+ * concerning the data to print (change, mspr) without a symbol value.
+ */
 export interface ToPrint {
   change: number;
   month: number;
@@ -29,19 +38,35 @@ export interface ToPrint {
   styleUrls: ['./sentimemt-details.component.css']
 })
 export class SentimemtDetailsComponent implements OnInit {
-  url_sentiment_detail: string = '';
+  /**
+   * @property data to store the data that come from the api.
+   * @property symbol, description to store the values of the symbol and the description of the stock.
+   */
   data!: SentimentDetail;
   symbol: string = '';
   description: string='';
+  /**
+   * @property BASEURL, api_key the key for the api and the first part of the url for the requests.
+   * @property DATE, data_to_print Time interval of the data to be displayed and an array to store the data to display.
+   */
+  BASEURL: string = 'https://finnhub.io/api/v1';
   api_key: string = 'bu4f8kn48v6uehqi3cqg';
+  DATE: string = '2022-08-01&to=2022-10-31';
   data_to_print: ToPrint[] = [];
+  /**
+   * @property change_month1, change_month2, and change_month3 to store the change values of the last three months.
+   */
   change_month1!: string;
   change_month2!: string;
   change_month3!: string;
+  /**
+   * @property mspr_month1, mspr_month2, and mspr_month3 to store the mspr values of the last three months.
+   */
   mspr_month1!: string;
   mspr_month2!: string;
   mspr_month3!: string;
   temp =''
+
   constructor(private http: HttpClient, private api: ApiService) {
   }
 
@@ -58,9 +83,11 @@ export class SentimemtDetailsComponent implements OnInit {
       })
   }
 
+  /**
+   * this function get the sentiment details of the last three months of the selected stock by the user.
+   */
   get_data(): Observable<SentimentDetail> {
-    this.url_sentiment_detail = 'https://finnhub.io/api/v1//stock/insider-sentiment?symbol='+ this.symbol+'&from=2015-01-01&to=2022-03-01&token='+ this.api_key;
-    return this.http.get<SentimentDetail>(this.url_sentiment_detail).pipe(
+    return this.http.get<SentimentDetail>( `${this.BASEURL}/stock/insider-sentiment?symbol=${this.symbol}&from=${this.DATE}&token=${this.api_key}`).pipe(
       tap((res: SentimentDetail) => {
         this.data=res;
         console.log(this.data);
@@ -68,11 +95,17 @@ export class SentimemtDetailsComponent implements OnInit {
         return res;
       }))
   }
+
+  /**
+   * this function check if we have the data of the last three months. If we have the data of the last three
+   * months, we displayed these. But if we just have the data of 2 months, we we look for the month that
+   * has no data and this month will take the value 'No data'. If we just have the data of 1 month, we look for
+   * the month with data and the other months without data will take the value. And if there is no data available
+   * for the last 3 months, all the values will be 'No data'
+   */
   to_print(){
     for(let i =0; i<this.data.data.length; i++){
-      if(this.data.data[i].year === 2022){
         this.data_to_print.push(this.data.data[i]);
-      }
     }
     console.log(this.data_to_print)
     if(this.data_to_print.length ==3){
@@ -84,7 +117,7 @@ export class SentimemtDetailsComponent implements OnInit {
       this.mspr_month3 =   JSON.stringify(this.data_to_print[2].mspr);
     }
     else if(this.data_to_print.length ==2){
-      if(this.data_to_print[0].month ==1 && this.data_to_print[1].month ==2){
+      if(this.data_to_print[0].month ==8 && this.data_to_print[1].month ==9){
         this.change_month1 = JSON.stringify(this.data_to_print[0].change);
         this.change_month2 = JSON.stringify(this.data_to_print[1].change);
         this.change_month3 = 'No data';
@@ -93,7 +126,7 @@ export class SentimemtDetailsComponent implements OnInit {
         this.mspr_month2 =   JSON.stringify(this.data_to_print[1].mspr);
         this.mspr_month3 =   'No data';
       }
-      else if(this.data_to_print[0].month ==1 && this.data_to_print[1].month ==3){
+      else if(this.data_to_print[0].month ==8 && this.data_to_print[1].month ==10){
         this.change_month1 = JSON.stringify(this.data_to_print[0].change);
         this.change_month2 = 'No data';
         this.change_month3 = JSON.stringify(this.data_to_print[1].change);
@@ -113,7 +146,7 @@ export class SentimemtDetailsComponent implements OnInit {
       }
     }
     else if(this.data_to_print.length ==1) {
-      if(this.data_to_print[0].month ==1){
+      if(this.data_to_print[0].month ==8){
         this.change_month1 = JSON.stringify(this.data_to_print[0].change);
         this.change_month2 = 'No data';
         this.change_month3 = 'No data';
@@ -122,7 +155,7 @@ export class SentimemtDetailsComponent implements OnInit {
         this.mspr_month2 =   'No data';
         this.mspr_month3 =   'No data';
       }
-      else if(this.data_to_print[0].month ==2){
+      else if(this.data_to_print[0].month ==9){
         this.change_month1 = 'No data';
         this.change_month2 = JSON.stringify(this.data_to_print[0].change);
         this.change_month3 = 'No data';

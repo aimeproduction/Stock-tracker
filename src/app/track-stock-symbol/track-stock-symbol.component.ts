@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ApiService, StockNameData} from "../backend/api.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import {forkJoin} from "rxjs";
+
 
 export interface DataDetail {
   c: number;
@@ -14,16 +14,6 @@ export interface DataDetail {
   pc: number;
 }
 
-export interface DataName {
-  count: number;
-  result: [
-{
-  description: string;
-  displaySymbol: string;
-  symbol: string;
-  type: string;
-}]
-}
 
 
 @Component({
@@ -34,16 +24,10 @@ export interface DataName {
 export class TrackStockSymbolComponent implements OnInit {
   data!: boolean;
   symbol!: string;
-  //symbol: string = '';
   public form_search!: FormGroup;
-  //api_key: string = 'bu4f8kn48v6uehqi3cqg'
-  store_symbol: string[] =[];
   stored_symbol = [];
-  stock_description = '';
-  visible = true;
   array_data!: DataDetail [];
   stockNameData!: StockNameData [];
-  symbol_sentiment : string= ''
 
   constructor(private fb: FormBuilder, private api: ApiService) {
   }
@@ -55,13 +39,9 @@ export class TrackStockSymbolComponent implements OnInit {
     });
     this.load_localstorage();
     this.symbol = this.form_search.controls['search'].value;
-
-      //null || undefined. If yes return []
       this.stockNameData = JSON.parse(<string>localStorage.getItem('stockName'));
 
       this.array_data = JSON.parse(<string>localStorage.getItem('data'));
-
-    //this.data = (this.stockNameData.length && this.array_data.length) > 0;
 
   }
 
@@ -69,7 +49,7 @@ export class TrackStockSymbolComponent implements OnInit {
   get_stock_name(symbol: string) {
     //this.symbol = symbol;
     this.api.get_stock_name(symbol.toUpperCase()).subscribe({
-      next: (res) => {
+      next: () => {
         this.stockNameData = JSON.parse(<string>localStorage.getItem('stockName'));
       },
       error: (err: HttpErrorResponse) => {
@@ -82,30 +62,41 @@ export class TrackStockSymbolComponent implements OnInit {
     this.load_localstorage();**/
   }
 
-  // function to get the Name of the current stock between the list of stocks in order to print the sentiment details
+  /**
+   * function to get the Name of the current stock between the list of stocks in order to print the sentiment details
+    */
    get_symbol(symbol: string, description: string){
      this.api.get_symbol(symbol, description);
    }
+
+  /**
+   * This function call the function "get_stock_detail" from the api.service to make a request with the symbol enter by the user
+   * @param symbol the symbol enter by the user
+   */
   get_stock_detail(symbol: string) {
-    this.api.get_stock_detail(symbol).subscribe((res) => {
+    this.api.get_stock_detail(symbol).subscribe(() => {
         this.array_data =  JSON.parse(<string>localStorage.getItem('data'));
         console.log(this.array_data);
-      },
-      error => {
-        console.log("Sorry, it was impossible to load the data");
+      }, error => {
       });
   }
 
+  /**
+   * this function load the all the symbols stored in the localstorage when this component is displayed.
+   */
   load_localstorage(){
     let temp = localStorage.getItem('symbol');
     if (temp != null) {
       this.stored_symbol = JSON.parse(temp);
     }
-    console.log("les valeurs:" +this.stored_symbol);
   }
 
+  /**
+   * this function call two others functions from api.service in order to delete one stock in the list of
+   * the displayed stocks through id
+   * @param id the id of the stock to delete.
+   */
   toggleElement(id: number) {
-    console.log("Hallo....")
     this.api.deleteStockDetail(id);
     this.api.deleteStockName(id);
 

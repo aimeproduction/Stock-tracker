@@ -3,6 +3,10 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {map, tap} from "rxjs/operators";
 
+/**
+ * this interface specifies the structure of the expected data that will come from the api
+ * concerning the name amd the description.
+ */
 export interface DataName {
   count: number;
   result: [
@@ -15,6 +19,10 @@ export interface DataName {
   ]
 }
 
+/**
+ * this interface specifies the structure of the expected data that will come from the api
+ * concerning the data(change, current price etc.) of a stock.
+ */
 export interface DataDetail {
   c: number;
   d: number;
@@ -25,6 +33,9 @@ export interface DataDetail {
   pc: number;
 }
 
+/**
+ * An interface with exactly the infos that are needed: the symbol and the description
+ */
 export interface StockNameData {
   symbol:string;
   description: string;
@@ -34,19 +45,26 @@ export interface StockNameData {
   providedIn: 'root'
 })
 export class ApiService {
-  url_stock_name: string ='';
-  url_stock_detail: string ='';
+  /**
+   * @property symbol, description to store the symbol and the description of a stock.
+   * @property api_key, BASEURL the key for the api and the first part of the url for the requests.
+   *
+   */
   symbol!: string;
   description!: string;
-  stockNameData: StockNameData [] = [];
   api_key: string = 'bu4f8kn48v6uehqi3cqg';
   BASEURL: string = 'https://finnhub.io/api/v1';
-  public array_data: DataDetail[] = [];
   symbol_sentiment : string= ''
   description_sentiment: string ='';
   constructor(private http: HttpClient) {
   }
 
+  /**
+   * This function retrieves the symbol and description of the stock.
+   * This information will then be used to display details of a stock.
+   * @param symbol the symbol enter by the user
+   * @param description the description of the stock
+   */
   get_symbol(symbol: string, description: string): string{
     this.symbol_sentiment = symbol;
     this.description_sentiment = description;
@@ -54,6 +72,12 @@ export class ApiService {
   return symbol;
 }
 
+  /**
+   *  This function search the name and the description of the stock from the api
+   *  according to the symbol entered by the user. Then, the retrieved values are stored in the localstorage
+   *  as an object with the structure of the interface StockNameData.
+   * @param symbol the symbol enter by the user
+   */
   get_stock_name(symbol: string): Observable<StockNameData> {
     return this.http.get<DataName>(`${this.BASEURL}/search?q=${symbol}&token=${this.api_key}`)
       .pipe(
@@ -79,6 +103,11 @@ export class ApiService {
       )
   }
 
+  /**
+   * This function get the data from the api according to the symbol entered by the user.
+   * Then, the retrieved values are stored in the localstorage as an object with the structure of the interface DataDetail
+   * @param symbol
+   */
   get_stock_detail(symbol: string): Observable<DataDetail> {
     return this.http.get<DataDetail>(`${this.BASEURL}/quote?symbol=${symbol}&token=${this.api_key}`).pipe(
       tap((res: DataDetail) => {
