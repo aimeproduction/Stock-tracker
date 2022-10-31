@@ -1,20 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ApiService, StockNameData} from "../backend/api.service";
+import {ApiService} from "../../service/api.service";
 import {HttpErrorResponse} from "@angular/common/http";
-
-
-export interface DataDetail {
-  c: number;
-  d: number;
-  dp: number;
-  h: number;
-  l: number;
-  o: number;
-  pc: number;
-}
-
-
+import {DataDetail} from "../../models/dataDetail-model";
+import {StockNameData} from "../../models/stockNameData-model";
 
 @Component({
   selector: 'app-track-stock-symbol',

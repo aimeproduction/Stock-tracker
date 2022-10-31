@@ -7,13 +7,13 @@
 .input-space{
   margin-top: 2em;
   margin-left: 7em;
-  width: 80%;
+  width: 50%;
   height: 120px;
   border:1px solid black;
 }
 .data{
   margin-left: 7em;
-  width: 80%;
+  width: 50%;
   height: 200px;
   border:1px solid black;
   margin-bottom: 15px;
@@ -24,12 +24,19 @@
 #stockInput{
   margin-left: 6em;
 }
+.child1, .child2 {
+  display: inline-block;
+}
+.child2{
+  margin-left: 6em;
+}
+
 h3{
   margin-left: 4.3em;
 }
-.btn-close{
-  background-color: red;
+.btn-delete{
+
   border: 0;
-  margin-left: 97.5%;
+  margin-left: 95.5%;
   cursor: pointer;
 }

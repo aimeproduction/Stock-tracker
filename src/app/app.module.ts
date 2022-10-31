@@ -5,9 +5,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TrackStockSymbolComponent } from './track-stock-symbol/track-stock-symbol.component';
+import { TrackStockSymbolComponent } from './components/track-stock-symbol/track-stock-symbol.component';
 import {ReactiveFormsModule} from "@angular/forms";
-import { SentimemtDetailsComponent } from './sentimemt-details/sentimemt-details.component';
+import { SentimemtDetailsComponent } from './components/sentimemt-details/sentimemt-details.component';
 import {MatListModule} from "@angular/material/list";
 
 

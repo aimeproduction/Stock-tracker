@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {tap} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {ApiService} from "../backend/api.service";
+import {ApiService} from "../../service/api.service";
 
 /**
  * this interface specifies the structure of the expected data that will come from the api

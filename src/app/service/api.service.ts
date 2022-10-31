@@ -2,44 +2,10 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {map, tap} from "rxjs/operators";
+import {DataName} from "../models/dataName-model";
+import {DataDetail} from "../models/dataDetail-model";
+import {StockNameData} from "../models/stockNameData-model";
 
-/**
- * this interface specifies the structure of the expected data that will come from the api
- * concerning the name amd the description.
- */
-export interface DataName {
-  count: number;
-  result: [
-    {
-      description: string;
-      displaySymbol: string;
-      symbol: string;
-      type: string;
-    }
-  ]
-}
-
-/**
- * this interface specifies the structure of the expected data that will come from the api
- * concerning the data(change, current price etc.) of a stock.
- */
-export interface DataDetail {
-  c: number;
-  d: number;
-  dp: number;
-  h: number;
-  l: number;
-  o: number;
-  pc: number;
-}
-
-/**
- * An interface with exactly the infos that are needed: the symbol and the description
- */
-export interface StockNameData {
-  symbol:string;
-  description: string;
-}
 
 @Injectable({
   providedIn: 'root'

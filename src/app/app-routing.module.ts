@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {TrackStockSymbolComponent} from "./track-stock-symbol/track-stock-symbol.component";
-import {SentimemtDetailsComponent} from "./sentimemt-details/sentimemt-details.component";
+import {TrackStockSymbolComponent} from "./components/track-stock-symbol/track-stock-symbol.component";
+import {SentimemtDetailsComponent} from "./components/sentimemt-details/sentimemt-details.component";
 
 const routes: Routes = [
   {

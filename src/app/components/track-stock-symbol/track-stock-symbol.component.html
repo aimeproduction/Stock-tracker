@@ -10,13 +10,18 @@
 
 <div>
 <div class="data" *ngFor="let data of array_data; let i = index">
-  <button id="remove{{symbol}}" class="btn delete"  (click)="toggleElement(i)">❌</button>
-
+  <button id="remove{{symbol}}" class="btn-delete"  (click)="toggleElement(i)">❌</button>
+<div class="child1">
   <h3>{{stockNameData[i].description}} ({{stockNameData[i].symbol}})</h3>
   <p class="title">Change today: {{data.d + "%"}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     Opening price: {{data.o | currency}}</p>
   <p class="title">Current price: {{data.c | currency}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    High price: {{data.h | currency}}</p>
+    High price: {{data.h | currency}}</p></div>
+  <div class="child2">
+    <span style="font-size: 100px; color: red; " *ngIf="data.d<=0">↓</span>
+    <span style="font-size: 100px; color: green;" *ngIf="data.d>0">↑</span>
+  </div>
+
   <a mat-list-item routerLinkActive="list-item-active" routerLink="/sentiment-details">
     <button class="btn-details" mat-raised-button color="primary" (click)="get_symbol(stockNameData[i].symbol, stockNameData[i].description)">Go to social sentiment details</button></a>
 </div>
