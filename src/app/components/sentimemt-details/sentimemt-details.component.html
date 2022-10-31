@@ -1,13 +1,22 @@
-
+<html>
 <h1>{{temp}}</h1>
 <table class="tab">
   <tr>
     <td class="td1">AUGUST</td>
-    <td rowspan="3" class="td4"></td>
+    <td rowspan="3" class="td4">
+      <span style="font-size: 50px; color: red; " *ngIf="change_month1<=0">↓</span>
+      <span style="font-size: 50px; color: green;" *ngIf="change_month1>0">↑</span>
+    </td>
     <td class="td1">SEPTEMBER</td>
-    <td rowspan="3" class="td4"></td>
+    <td rowspan="3" class="td4">
+      <span style="font-size: 50px; color: red; " *ngIf="change_month2<=0">↓</span>
+      <span style="font-size: 50px; color: green;" *ngIf="change_month2>0">↑</span>
+    </td>
     <td class="td1">OCTOBER</td>
-    <td rowspan="3" class="td4"></td>
+    <td rowspan="3" class="td4">
+      <span style="font-size: 50px; color: red; " *ngIf="change_month3<=0">↓</span>
+      <span style="font-size: 50px; color: green;" *ngIf="change_month3>0">↑</span>
+    </td>
   </tr>
   <tr>
     <td class="td1">CHANGE: {{change_month1}}</td>
@@ -23,3 +32,5 @@
 <br>
 <a mat-list-item routerLinkActive="list-item-active" routerLink="/track-stock-symbol">
   <button class="backBtn" mat-raised-button color="primary">Back to list of stocks</button></a>
+
+</html>

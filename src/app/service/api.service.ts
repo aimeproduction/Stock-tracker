@@ -117,16 +117,18 @@ export class ApiService {
       }))
   }
 
-  deleteStockDetail(index: number)  {
+  deleteStockDetail(index: number): DataDetail []  {
     const currentDataStockDetail = JSON.parse(<string>localStorage.getItem("data")) as DataDetail [];
-    currentDataStockDetail.slice(index, 1);
+    currentDataStockDetail.splice(index, 1);
     localStorage.setItem("data", JSON.stringify(currentDataStockDetail));
+    return currentDataStockDetail;
   }
 
-  deleteStockName(index: number) {
+  deleteStockName(index: number): StockNameData[] {
     const currentStockName = JSON.parse(<string>localStorage.getItem("stockName")) as StockNameData [];
-    currentStockName.slice(index, 1);
+    currentStockName.splice(index, 1);
     localStorage.setItem("stockName", JSON.stringify(currentStockName));
+    return currentStockName;
   }
 
 

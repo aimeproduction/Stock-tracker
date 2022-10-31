@@ -97,11 +97,7 @@ export class TrackStockSymbolComponent implements OnInit {
    * @param id the id of the stock to delete.
    */
   toggleElement(id: number) {
-    this.api.deleteStockDetail(id);
-    this.api.deleteStockName(id);
-
-    this.stockNameData = JSON.parse(<string>localStorage.getItem('stockName'));
-
-    this.array_data = JSON.parse(<string>localStorage.getItem('data'));
+    this.array_data = this.api.deleteStockDetail(id);
+    this.stockNameData = this.api.deleteStockName(id);
   }
 }

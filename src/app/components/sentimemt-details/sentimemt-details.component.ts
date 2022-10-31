@@ -56,15 +56,15 @@ export class SentimemtDetailsComponent implements OnInit {
   /**
    * @property change_month1, change_month2, and change_month3 to store the change values of the last three months.
    */
-  change_month1!: string;
-  change_month2!: string;
-  change_month3!: string;
+  change_month1!: number;
+  change_month2!: number;
+  change_month3!: number;
   /**
    * @property mspr_month1, mspr_month2, and mspr_month3 to store the mspr values of the last three months.
    */
-  mspr_month1!: string;
-  mspr_month2!: string;
-  mspr_month3!: string;
+  mspr_month1!: number;
+  mspr_month2!: number;
+  mspr_month3!: number;
   temp =''
 
   constructor(private http: HttpClient, private api: ApiService) {
@@ -109,79 +109,79 @@ export class SentimemtDetailsComponent implements OnInit {
     }
     console.log(this.data_to_print)
     if(this.data_to_print.length ==3){
-      this.change_month1 = JSON.stringify(this.data_to_print[0].change);
-      this.change_month2 = JSON.stringify(this.data_to_print[1].change);
-      this.change_month3 = JSON.stringify(this.data_to_print[2].change);
-      this.mspr_month1 =   JSON.stringify(this.data_to_print[0].mspr);
-      this.mspr_month2 =   JSON.stringify(this.data_to_print[1].mspr);
-      this.mspr_month3 =   JSON.stringify(this.data_to_print[2].mspr);
+      this.change_month1 = this.data_to_print[0].change;
+      this.change_month2 = this.data_to_print[1].change;
+      this.change_month3 = this.data_to_print[2].change;
+      this.mspr_month1 =   this.data_to_print[0].mspr;
+      this.mspr_month2 =   this.data_to_print[1].mspr;
+      this.mspr_month3 =   this.data_to_print[2].mspr;
     }
     else if(this.data_to_print.length ==2){
       if(this.data_to_print[0].month ==8 && this.data_to_print[1].month ==9){
-        this.change_month1 = JSON.stringify(this.data_to_print[0].change);
-        this.change_month2 = JSON.stringify(this.data_to_print[1].change);
-        this.change_month3 = 'No data';
+        this.change_month1 = this.data_to_print[0].change;
+        this.change_month2 = this.data_to_print[1].change;
+        this.change_month3 = 0;
 
-        this.mspr_month1 =   JSON.stringify(this.data_to_print[0].mspr);
-        this.mspr_month2 =   JSON.stringify(this.data_to_print[1].mspr);
-        this.mspr_month3 =   'No data';
+        this.mspr_month1 =   this.data_to_print[0].mspr;
+        this.mspr_month2 =   this.data_to_print[1].mspr;
+        this.mspr_month3 =   0;
       }
       else if(this.data_to_print[0].month ==8 && this.data_to_print[1].month ==10){
-        this.change_month1 = JSON.stringify(this.data_to_print[0].change);
-        this.change_month2 = 'No data';
-        this.change_month3 = JSON.stringify(this.data_to_print[1].change);
+        this.change_month1 = this.data_to_print[0].change;
+        this.change_month2 = 0;
+        this.change_month3 = this.data_to_print[1].change;
 
-        this.mspr_month1 =   JSON.stringify(this.data_to_print[0].mspr);
-        this.mspr_month2 =   'No data';
-        this.mspr_month3 =   JSON.stringify(this.data_to_print[1].mspr);
+        this.mspr_month1 =   this.data_to_print[0].mspr;
+        this.mspr_month2 =   0;
+        this.mspr_month3 =   this.data_to_print[1].mspr;
       }
       else {
-        this.change_month1 = 'No data';
-        this.change_month2 = JSON.stringify(this.data_to_print[0].change);
-        this.change_month3 = JSON.stringify(this.data_to_print[1].change);
+        this.change_month1 = 0;
+        this.change_month2 = this.data_to_print[0].change;
+        this.change_month3 = this.data_to_print[1].change;
 
-        this.mspr_month1 =   'No data';
-        this.mspr_month2 =   JSON.stringify(this.data_to_print[0].mspr);
-        this.mspr_month3 =   JSON.stringify(this.data_to_print[1].mspr);
+        this.mspr_month1 =   0;
+        this.mspr_month2 =   this.data_to_print[0].mspr;
+        this.mspr_month3 =   this.data_to_print[1].mspr;
       }
     }
     else if(this.data_to_print.length ==1) {
       if(this.data_to_print[0].month ==8){
-        this.change_month1 = JSON.stringify(this.data_to_print[0].change);
-        this.change_month2 = 'No data';
-        this.change_month3 = 'No data';
+        this.change_month1 = this.data_to_print[0].change;
+        this.change_month2 = 0;
+        this.change_month3 = 0;
 
-        this.mspr_month1 =   JSON.stringify(this.data_to_print[0].mspr);
-        this.mspr_month2 =   'No data';
-        this.mspr_month3 =   'No data';
+        this.mspr_month1 =   this.data_to_print[0].mspr;
+        this.mspr_month2 =   0;
+        this.mspr_month3 =   0;
       }
       else if(this.data_to_print[0].month ==9){
-        this.change_month1 = 'No data';
-        this.change_month2 = JSON.stringify(this.data_to_print[0].change);
-        this.change_month3 = 'No data';
+        this.change_month1 = 0;
+        this.change_month2 = this.data_to_print[0].change;
+        this.change_month3 = 0;
 
-        this.mspr_month1 =   'No data';
-        this.mspr_month2 =   JSON.stringify(this.data_to_print[0].mspr);
-        this.mspr_month3 =   'No data';
+        this.mspr_month1 =   0;
+        this.mspr_month2 =   this.data_to_print[0].mspr;
+        this.mspr_month3 =   0;
       }
       else{
-        this.change_month1 = 'No data';
-        this.change_month2 = 'No data';
-        this.change_month3 = JSON.stringify(this.data_to_print[0].change);
+        this.change_month1 = 0;
+        this.change_month2 = 0;
+        this.change_month3 = this.data_to_print[0].change;
 
-        this.mspr_month1 =   'No data';
-        this.mspr_month2 =   'No data';
-        this.mspr_month3 =   JSON.stringify(this.data_to_print[0].mspr);
+        this.mspr_month1 =   0;
+        this.mspr_month2 =   0;
+        this.mspr_month3 =   this.data_to_print[0].mspr;
       }
     }
     else{
-      this.change_month1 = 'No data';
-      this.change_month2 = 'No data';
-      this.change_month3 = 'No data';
+      this.change_month1 = 0;
+      this.change_month2 = 0;
+      this.change_month3 = 0;
 
-      this.mspr_month1 =   'No data';
-      this.mspr_month2 =   'No data';
-      this.mspr_month3 =   'No data';
+      this.mspr_month1 =   0;
+      this.mspr_month2 =   0;
+      this.mspr_month3 =   0;
     }
   }
 }
