@@ -1,0 +1,23 @@
+<div class="input-space">
+  <form class="ui container form" appearance="fill" [formGroup]="form_search"
+        (ngSubmit)="get_stock_detail(form_search.value.search);get_stock_name(form_search.value.search)">
+    <p class="title">Enter the symbol of a stock to track(i.e. AAPL, TSLA, GOOGL)</p>
+    <input type="search" id="stockInput" formControlName="search" style="height: 30px;">
+    <button id="trackBtn" mat-raised-button color="primary" [disabled]="!form_search.valid">Track Stock</button>
+  </form>
+</div>
+<br><br>
+
+<div>
+<div class="data" *ngFor="let data of array_data; let i = index">
+  <button id="remove{{symbol}}" class="btn delete"  (click)="toggleElement(i)">❌</button>
+
+  <h3>{{stockNameData[i].description}} ({{stockNameData[i].symbol}})</h3>
+  <p class="title">Change today: {{data.d + "%"}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Opening price: {{data.o | currency}}</p>
+  <p class="title">Current price: {{data.c | currency}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    High price: {{data.h | currency}}</p>
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="/sentiment-details">
+    <button class="btn-details" mat-raised-button color="primary" (click)="get_symbol(stockNameData[i].symbol, stockNameData[i].description)">Go to social sentiment details</button></a>
+</div>
+</div>
