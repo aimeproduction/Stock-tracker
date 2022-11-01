@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {TrackStockSymbolComponent} from "./components/track-stock-symbol/track-stock-symbol.component";
-import {SentimemtDetailsComponent} from "./components/sentimemt-details/sentimemt-details.component";
+import {SentimemtComponent} from "./components/sentimemt/sentimemt.component";
+
 
 const routes: Routes = [
   {
@@ -13,8 +14,8 @@ const routes: Routes = [
     path: 'track-stock-symbol',
     component: TrackStockSymbolComponent
   },
-  { path: 'sentiment-details',
-    component: SentimemtDetailsComponent
+  { path: 'sentiment/:symbol',
+    component: SentimemtComponent
   }
 ];
 

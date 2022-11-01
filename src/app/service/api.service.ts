@@ -39,7 +39,6 @@ export class ApiService {
   get_symbol(symbol: string, description: string): string {
     this.symbol_sentiment = symbol;
     this.description_sentiment = description;
-    console.log('test' + symbol)
     return symbol;
   }
 

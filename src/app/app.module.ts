@@ -7,7 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TrackStockSymbolComponent } from './components/track-stock-symbol/track-stock-symbol.component';
 import {ReactiveFormsModule} from "@angular/forms";
-import { SentimemtDetailsComponent } from './components/sentimemt-details/sentimemt-details.component';
+import {SentimemtComponent} from "./components/sentimemt/sentimemt.component";
 import {MatListModule} from "@angular/material/list";
 
 
@@ -15,7 +15,7 @@ import {MatListModule} from "@angular/material/list";
   declarations: [
     AppComponent,
     TrackStockSymbolComponent,
-    SentimemtDetailsComponent
+    SentimemtComponent
   ],
     imports: [
         BrowserModule,

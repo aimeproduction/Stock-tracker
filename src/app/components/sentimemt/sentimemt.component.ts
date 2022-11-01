@@ -7,11 +7,11 @@ import {SentimentDetail} from "../../models/sentiment-detail.model";
 import {ToPrint} from "../../models/to-print.model";
 
 @Component({
-  selector: 'app-sentimemt-details',
-  templateUrl: './sentimemt-details.component.html',
-  styleUrls: ['./sentimemt-details.component.css']
+  selector: 'app-sentimemt-',
+  templateUrl: './sentimemt.component.html',
+  styleUrls: ['./sentimemt.component.css']
 })
-export class SentimemtDetailsComponent implements OnInit {
+export class SentimemtComponent implements OnInit {
   /**
    * @property data, errorMessage to store the data that come from the api and to print an error when something goes wrong.
    * @property symbol, description to store the values of the symbol and the description of the stock.
@@ -48,13 +48,15 @@ export class SentimemtDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.description = this.api.description_sentiment;
     this.symbol = this.api.symbol_sentiment;
-    localStorage.setItem("description", JSON.stringify(this.description));
-    this.temp = JSON.parse(<string>localStorage.getItem('description'));
+
     this.get_data().subscribe((res) => {
       this.data = res;
     }, error => {
       this.errorMessage = "Sorry, it was impossible to load the sentiment details.  " + error.message;
     });
+    localStorage.setItem("description1", JSON.stringify(this.description));
+    this.temp = JSON.parse(<string>localStorage.getItem('description1'));
+    console.log(this.temp)
   }
 
   /**
@@ -64,7 +66,6 @@ export class SentimemtDetailsComponent implements OnInit {
     return this.http.get<SentimentDetail>(`${this.BASEURL}/stock/insider-sentiment?symbol=${this.symbol}&from=${this.DATE}&token=${this.api_key}`).pipe(
       tap((res: SentimentDetail) => {
         this.data = res;
-        console.log(this.data);
         this.to_print();
         return res;
       }))
@@ -81,7 +82,6 @@ export class SentimemtDetailsComponent implements OnInit {
     for (let i = 0; i < this.data.data.length; i++) {
       this.data_to_print.push(this.data.data[i]);
     }
-    console.log(this.data_to_print)
     if (this.data_to_print.length == 3) {
       this.change_month1 = this.data_to_print[0].change;
       this.change_month2 = this.data_to_print[1].change;

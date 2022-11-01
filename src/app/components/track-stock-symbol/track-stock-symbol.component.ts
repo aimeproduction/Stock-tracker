@@ -76,7 +76,6 @@ export class TrackStockSymbolComponent implements OnInit {
     this.api.get_stock_detail(symbol).subscribe(() => {
       this.array_data = JSON.parse(<string>localStorage.getItem('data'));
       this.errorMessage = '';
-      console.log(this.array_data);
     }, error => {
       this.errorMessage = "Sorry, it was impossible to load the data in details.  " + error.message;
 

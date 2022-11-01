@@ -22,8 +22,8 @@
       <span style="font-size: 100px; color: green;" *ngIf="data.d>0">↑</span>
     </div>
 <span *ngIf="array_data">
-    <a mat-list-item routerLinkActive="list-item-active" routerLink="/sentiment-details">
-      <button class="btn-details" mat-raised-button color="primary"
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/sentiment/{{stockNameData[i].symbol}}">
+      <button id="sentiment{{stockNameData[i].symbol}}" class="btn-details" mat-raised-button color="primary"
               (click)="get_symbol(stockNameData[i].symbol, stockNameData[i].description)">Go to social sentiment details
       </button>
     </a></span>
