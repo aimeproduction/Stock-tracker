@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {map, tap} from "rxjs/operators";
-import {DataName} from "../models/dataName-model";
-import {DataDetail} from "../models/dataDetail-model";
-import {StockNameData} from "../models/stockNameData-model";
+import {DataName} from "../models/data-name.model";
+import {DataDetail} from "../models/data-detail.model";
+import {StockNameData} from "../models/stock-name-data.model";
 
 
 @Injectable({
@@ -20,8 +20,13 @@ export class ApiService {
   description!: string;
   api_key: string = 'bu4f8kn48v6uehqi3cqg';
   BASEURL: string = 'https://finnhub.io/api/v1';
-  symbol_sentiment : string= ''
-  description_sentiment: string ='';
+  /**
+   * @property symbol_sentiment, description_sentiment to store and share the value of the symbol and the description
+   * in order to display the sentiments details in another component.
+   */
+  symbol_sentiment: string = ''
+  description_sentiment: string = '';
+
   constructor(private http: HttpClient) {
   }
 
@@ -31,12 +36,12 @@ export class ApiService {
    * @param symbol the symbol enter by the user
    * @param description the description of the stock
    */
-  get_symbol(symbol: string, description: string): string{
+  get_symbol(symbol: string, description: string): string {
     this.symbol_sentiment = symbol;
     this.description_sentiment = description;
-    console.log('test'+ symbol)
-  return symbol;
-}
+    console.log('test' + symbol)
+    return symbol;
+  }
 
   /**
    *  This function search the name and the description of the stock from the api
@@ -52,19 +57,21 @@ export class ApiService {
           this.get_symbol(this.symbol, this.description);
           this.description = response.result[0].description;
           const current = JSON.parse(<string>localStorage.getItem("stockName")) ?? [];
-          current.push(
-            {
-              symbol: response.result[0].symbol,
-              description: response.result[0].description
-            }
-          );
+          if(this.get_stock_detail(symbol) != null) {
+            current.push(
+              {
+                symbol: response.result[0].symbol,
+                description: response.result[0].description
+              }
+            );
+          }
 
           localStorage.setItem("stockName", JSON.stringify(current));
 
-            return {
-              symbol: response.result[0].symbol,
-              description: response.result[0].description
-            }
+          return {
+            symbol: response.result[0].symbol,
+            description: response.result[0].description
+          }
         })
       )
   }
@@ -78,18 +85,28 @@ export class ApiService {
     return this.http.get<DataDetail>(`${this.BASEURL}/quote?symbol=${symbol}&token=${this.api_key}`).pipe(
       tap((res: DataDetail) => {
         const current = JSON.parse(<string>localStorage.getItem("data")) ?? [];
+        if(res.d != null){
         current.push(res);
         localStorage.setItem("data", JSON.stringify(current));
-      }))
+      }}))
+
   }
 
-  deleteStockDetail(index: number): DataDetail []  {
+  /**
+   * This function delete the name and the description of a stock in the localstorage.
+   * @param index, the index of the stock to be deleted.
+   */
+  deleteStockDetail(index: number): DataDetail [] {
     const currentDataStockDetail = JSON.parse(<string>localStorage.getItem("data")) as DataDetail [];
     currentDataStockDetail.splice(index, 1);
     localStorage.setItem("data", JSON.stringify(currentDataStockDetail));
     return currentDataStockDetail;
   }
 
+  /**
+   * This function delete the data(change, current price etc) of a stock in the localstorage.
+   * @param index, the index of the stock to be deleted.
+   */
   deleteStockName(index: number): StockNameData[] {
     const currentStockName = JSON.parse(<string>localStorage.getItem("stockName")) as StockNameData [];
     currentStockName.splice(index, 1);

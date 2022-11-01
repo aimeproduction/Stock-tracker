@@ -1,36 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {tap} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ApiService} from "../../service/api.service";
-
-/**
- * this interface specifies the structure of the expected data that will come from the api
- * concerning the data and the symbol.
- */
-export interface SentimentDetail {
-  data:[
-    {
-      change: number;
-      month: number;
-      mspr: number;
-      symbol: string;
-      year: number;
-    }]
-  symbol: string;
-}
-
-/**
- * this interface specifies the structure of the expected data that will come from the api
- * concerning the data to print (change, mspr) without a symbol value.
- */
-export interface ToPrint {
-  change: number;
-  month: number;
-  mspr: number;
-  symbol: string;
-  year: number;
-}
+import {SentimentDetail} from "../../models/sentiment-detail.model";
+import {ToPrint} from "../../models/to-print.model";
 
 @Component({
   selector: 'app-sentimemt-details',
@@ -39,12 +13,13 @@ export interface ToPrint {
 })
 export class SentimemtDetailsComponent implements OnInit {
   /**
-   * @property data to store the data that come from the api.
+   * @property data, errorMessage to store the data that come from the api and to print an error when something goes wrong.
    * @property symbol, description to store the values of the symbol and the description of the stock.
    */
   data!: SentimentDetail;
+  errorMessage = ''
   symbol: string = '';
-  description: string='';
+  description: string = '';
   /**
    * @property BASEURL, api_key the key for the api and the first part of the url for the requests.
    * @property DATE, data_to_print Time interval of the data to be displayed and an array to store the data to display.
@@ -65,33 +40,32 @@ export class SentimemtDetailsComponent implements OnInit {
   mspr_month1!: number;
   mspr_month2!: number;
   mspr_month3!: number;
-  temp =''
+  temp = ''
 
   constructor(private http: HttpClient, private api: ApiService) {
   }
 
   ngOnInit(): void {
     this.description = this.api.description_sentiment;
-   this.symbol=this.api.symbol_sentiment;
+    this.symbol = this.api.symbol_sentiment;
     localStorage.setItem("description", JSON.stringify(this.description));
     this.temp = JSON.parse(<string>localStorage.getItem('description'));
     this.get_data().subscribe((res) => {
-        this.data = res;
-      },
-      error => {
-        alert("wrong");
-      })
+      this.data = res;
+    }, error => {
+      this.errorMessage = "Sorry, it was impossible to load the sentiment details.  " + error.message;
+    });
   }
 
   /**
    * this function get the sentiment details of the last three months of the selected stock by the user.
    */
   get_data(): Observable<SentimentDetail> {
-    return this.http.get<SentimentDetail>( `${this.BASEURL}/stock/insider-sentiment?symbol=${this.symbol}&from=${this.DATE}&token=${this.api_key}`).pipe(
+    return this.http.get<SentimentDetail>(`${this.BASEURL}/stock/insider-sentiment?symbol=${this.symbol}&from=${this.DATE}&token=${this.api_key}`).pipe(
       tap((res: SentimentDetail) => {
-        this.data=res;
+        this.data = res;
         console.log(this.data);
-         this.to_print();
+        this.to_print();
         return res;
       }))
   }
@@ -103,85 +77,78 @@ export class SentimemtDetailsComponent implements OnInit {
    * the month with data and the other months without data will take the value. And if there is no data available
    * for the last 3 months, all the values will be 'No data'
    */
-  to_print(){
-    for(let i =0; i<this.data.data.length; i++){
-        this.data_to_print.push(this.data.data[i]);
+  to_print() {
+    for (let i = 0; i < this.data.data.length; i++) {
+      this.data_to_print.push(this.data.data[i]);
     }
     console.log(this.data_to_print)
-    if(this.data_to_print.length ==3){
+    if (this.data_to_print.length == 3) {
       this.change_month1 = this.data_to_print[0].change;
       this.change_month2 = this.data_to_print[1].change;
       this.change_month3 = this.data_to_print[2].change;
-      this.mspr_month1 =   this.data_to_print[0].mspr;
-      this.mspr_month2 =   this.data_to_print[1].mspr;
-      this.mspr_month3 =   this.data_to_print[2].mspr;
-    }
-    else if(this.data_to_print.length ==2){
-      if(this.data_to_print[0].month ==8 && this.data_to_print[1].month ==9){
+      this.mspr_month1 = this.data_to_print[0].mspr;
+      this.mspr_month2 = this.data_to_print[1].mspr;
+      this.mspr_month3 = this.data_to_print[2].mspr;
+    } else if (this.data_to_print.length == 2) {
+      if (this.data_to_print[0].month == 8 && this.data_to_print[1].month == 9) {
         this.change_month1 = this.data_to_print[0].change;
         this.change_month2 = this.data_to_print[1].change;
         this.change_month3 = 0;
 
-        this.mspr_month1 =   this.data_to_print[0].mspr;
-        this.mspr_month2 =   this.data_to_print[1].mspr;
-        this.mspr_month3 =   0;
-      }
-      else if(this.data_to_print[0].month ==8 && this.data_to_print[1].month ==10){
+        this.mspr_month1 = this.data_to_print[0].mspr;
+        this.mspr_month2 = this.data_to_print[1].mspr;
+        this.mspr_month3 = 0;
+      } else if (this.data_to_print[0].month == 8 && this.data_to_print[1].month == 10) {
         this.change_month1 = this.data_to_print[0].change;
         this.change_month2 = 0;
         this.change_month3 = this.data_to_print[1].change;
 
-        this.mspr_month1 =   this.data_to_print[0].mspr;
-        this.mspr_month2 =   0;
-        this.mspr_month3 =   this.data_to_print[1].mspr;
-      }
-      else {
+        this.mspr_month1 = this.data_to_print[0].mspr;
+        this.mspr_month2 = 0;
+        this.mspr_month3 = this.data_to_print[1].mspr;
+      } else {
         this.change_month1 = 0;
         this.change_month2 = this.data_to_print[0].change;
         this.change_month3 = this.data_to_print[1].change;
 
-        this.mspr_month1 =   0;
-        this.mspr_month2 =   this.data_to_print[0].mspr;
-        this.mspr_month3 =   this.data_to_print[1].mspr;
+        this.mspr_month1 = 0;
+        this.mspr_month2 = this.data_to_print[0].mspr;
+        this.mspr_month3 = this.data_to_print[1].mspr;
       }
-    }
-    else if(this.data_to_print.length ==1) {
-      if(this.data_to_print[0].month ==8){
+    } else if (this.data_to_print.length == 1) {
+      if (this.data_to_print[0].month == 8) {
         this.change_month1 = this.data_to_print[0].change;
         this.change_month2 = 0;
         this.change_month3 = 0;
 
-        this.mspr_month1 =   this.data_to_print[0].mspr;
-        this.mspr_month2 =   0;
-        this.mspr_month3 =   0;
-      }
-      else if(this.data_to_print[0].month ==9){
+        this.mspr_month1 = this.data_to_print[0].mspr;
+        this.mspr_month2 = 0;
+        this.mspr_month3 = 0;
+      } else if (this.data_to_print[0].month == 9) {
         this.change_month1 = 0;
         this.change_month2 = this.data_to_print[0].change;
         this.change_month3 = 0;
 
-        this.mspr_month1 =   0;
-        this.mspr_month2 =   this.data_to_print[0].mspr;
-        this.mspr_month3 =   0;
-      }
-      else{
+        this.mspr_month1 = 0;
+        this.mspr_month2 = this.data_to_print[0].mspr;
+        this.mspr_month3 = 0;
+      } else {
         this.change_month1 = 0;
         this.change_month2 = 0;
         this.change_month3 = this.data_to_print[0].change;
 
-        this.mspr_month1 =   0;
-        this.mspr_month2 =   0;
-        this.mspr_month3 =   this.data_to_print[0].mspr;
+        this.mspr_month1 = 0;
+        this.mspr_month2 = 0;
+        this.mspr_month3 = this.data_to_print[0].mspr;
       }
-    }
-    else{
+    } else {
       this.change_month1 = 0;
       this.change_month2 = 0;
       this.change_month3 = 0;
 
-      this.mspr_month1 =   0;
-      this.mspr_month2 =   0;
-      this.mspr_month3 =   0;
+      this.mspr_month1 = 0;
+      this.mspr_month2 = 0;
+      this.mspr_month3 = 0;
     }
   }
 }
