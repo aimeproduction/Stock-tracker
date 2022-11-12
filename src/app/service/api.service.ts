@@ -56,7 +56,7 @@ export class ApiService {
           this.get_symbol(this.symbol, this.description);
           this.description = response.result[0].description;
           const current = JSON.parse(<string>localStorage.getItem("stockName")) ?? [];
-          if(this.get_stock_detail(symbol) != null) {
+          if (this.get_stock_detail(symbol) != null) {
             current.push(
               {
                 symbol: response.result[0].symbol,
@@ -84,10 +84,11 @@ export class ApiService {
     return this.http.get<DataDetail>(`${this.BASEURL}/quote?symbol=${symbol}&token=${this.api_key}`).pipe(
       tap((res: DataDetail) => {
         const current = JSON.parse(<string>localStorage.getItem("data")) ?? [];
-        if(res.d != null){
-        current.push(res);
-        localStorage.setItem("data", JSON.stringify(current));
-      }}))
+        if (res.d != null) {
+          current.push(res);
+          localStorage.setItem("data", JSON.stringify(current));
+        }
+      }))
 
   }
 
@@ -112,6 +113,5 @@ export class ApiService {
     localStorage.setItem("stockName", JSON.stringify(currentStockName));
     return currentStockName;
   }
-
 
 }

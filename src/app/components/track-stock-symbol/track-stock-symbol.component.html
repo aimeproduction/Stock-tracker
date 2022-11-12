@@ -7,7 +7,9 @@
   </form>
 </div>
 <br><br>
-
+<div class="errmessage" *ngIf="errorMessage">
+  {{errorMessage}}
+</div>
 <div>
   <div class="data" *ngFor="let data of array_data; let i = index">
     <button id="remove{{stockNameData[i].symbol}}" class="btn-delete" (click)="toggleElement(i)">❌</button>

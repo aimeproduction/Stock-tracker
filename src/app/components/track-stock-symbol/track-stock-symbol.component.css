@@ -34,8 +34,12 @@
 h3{
   margin-left: 4.3em;
 }
+.errmessage{
+  margin-left: 7em;
+  font-size: 25px;
+  color: red;
+}
 .btn-delete{
-
   border: 0;
   margin-left: 95.5%;
   cursor: pointer;

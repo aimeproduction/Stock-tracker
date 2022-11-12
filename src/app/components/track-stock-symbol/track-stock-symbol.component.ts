@@ -24,7 +24,7 @@ export class TrackStockSymbolComponent implements OnInit {
    * @property array_data, an array to store all the data(change, price etc.) from the api.
    * @property stockNameData, an array to store the symbols and the descriptions that are displayed.
    */
-  stored_symbol = [];
+ // stored_symbol = [];
   array_data!: DataDetail [];
   stockNameData!: StockNameData [];
 
@@ -35,7 +35,7 @@ export class TrackStockSymbolComponent implements OnInit {
     this.form_search = this.fb.group({
       search: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(5)]]
     });
-    this.load_localstorage();
+    // this.load_localstorage();
 
     /**
      * Here we load the data(Name, description, change etc.) stored in the localstorage.
@@ -56,7 +56,7 @@ export class TrackStockSymbolComponent implements OnInit {
         this.errorMessage = '';
       },
       error: (err: HttpErrorResponse) => {
-        this.errorMessage = "Sorry, it was impossible to load the name.   " + err.message;
+        this.errorMessage = "Sorry, it was impossible to load the data for the stock: "+symbol;
       }
     });
   }
@@ -82,15 +82,15 @@ export class TrackStockSymbolComponent implements OnInit {
     });
   }
 
-  /**
+ /* /!**
    * this function load the all the symbols stored in the localstorage when this component is displayed.
-   */
+   *!/
   load_localstorage() {
     let temp = localStorage.getItem('symbol');
     if (temp != null) {
       this.stored_symbol = JSON.parse(temp);
     }
-  }
+  }*/
 
   /**
    * this function call two others functions from api.service in order to delete one stock in the list of
