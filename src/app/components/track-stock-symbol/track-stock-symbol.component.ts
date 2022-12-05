@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {ApiService} from "../../service/api.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {DataDetail} from "../../models/data-detail.model";
@@ -17,7 +17,7 @@ export class TrackStockSymbolComponent implements OnInit {
    * @property form_search, The form that control the value enter by the user.
    * @property errorMessage to print an error when something goes wrong.
    */
-  public form_search!: FormGroup;
+  public form_search!: UntypedFormGroup;
   errorMessage: string = ''
   /**
    * @property stored_symbol, an array to store all the symbol enter by the user.
@@ -28,7 +28,7 @@ export class TrackStockSymbolComponent implements OnInit {
   array_data!: DataDetail [];
   stockNameData!: StockNameData [];
 
-  constructor(private fb: FormBuilder, private api: ApiService) {
+  constructor(private fb: UntypedFormBuilder, private api: ApiService) {
   }
 
   ngOnInit(): void {
